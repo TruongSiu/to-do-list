@@ -1,9 +1,19 @@
 <template>
   <div>
+    <template>
+      <select v-model="locale" style="margin-left : 15px">
+        <option
+          v-for="(item, index) in locales"
+          :key="index"
+          :label="item.label"
+          :value="item.value"
+        />
+      </select>
+    </template>
     <h1 style="text-align: center">ToDo-List</h1>
     <template>
       <div class="head">
-        <a-button type="primary" @click="showModal"> Add </a-button>
+        <a-button type="primary" @click="showModal"> {{ $t('Add') }}</a-button>
         <a-modal v-model="inputModal" title="To-do List" @ok="handleOk">
           <template>
             <a-form
@@ -35,11 +45,15 @@
                   ]"
                   placeholder="Select a option"
                 >
-                  <a-select-option value="New"> new </a-select-option>
-                  <a-select-option value="Inprogress">
-                    inprogress
+                  <a-select-option value="New">
+                    {{ $t('new') }}
                   </a-select-option>
-                  <a-select-option value="Done"> done </a-select-option>
+                  <a-select-option value="Inprogress">
+                    {{ $t('inprogress') }}
+                  </a-select-option>
+                  <a-select-option value="Done">
+                    {{ $t('done') }}
+                  </a-select-option>
                 </a-select>
               </a-form-item>
               <a-form-item label="Describe">
@@ -93,14 +107,14 @@
             style="width: 90px; margin-right: 8px"
             @click="() => handleSearch(selectedKeys, confirm, column.dataIndex)"
           >
-            Search
+          {{ $t('Search') }}
           </a-button>
           <a-button
             size="small"
             style="width: 90px"
             @click="() => handleReset(clearFilters)"
           >
-            Reset
+          {{ $t('Reset') }}
           </a-button>
         </div>
         <a-icon
@@ -128,17 +142,17 @@
         <template slot="operation" slot-scope="text, record">
           <div class="editable-row-operations">
             <span v-if="record.editable">
-              <a @click="() => save(record.key)">Save</a>
+              <a @click="() => save(record.key)">{{ $t('Save') }}</a>
               <a-popconfirm
                 title="Sure to cancel?"
                 @confirm="() => cancel(record.key)"
               >
-                <a>Cancel</a>
+                <a>{{ $t('Cancel') }}</a>
               </a-popconfirm>
             </span>
             <span v-else>
               <a :disabled="editingKey !== ''" @click="() => edit(record.key)"
-                >Edit</a
+                >{{ $t('Edit') }}</a
               >
             </span>
           </div>
@@ -148,7 +162,7 @@
             title="Sure to delete?"
             @confirm="() => onDelete(record.key)"
           >
-            <a href="javascript:;"> Delete <a-icon type="delete" /></a>
+            <a href="javascript:;"> {{ $t('Delete') }} <a-icon type="delete" /></a>
           </a-popconfirm>
         </template>
       </a-table>
@@ -156,8 +170,6 @@
   </div>
 </template>
 <script>
-import { log } from "util";
-
 export default {
   data() {
     return {
@@ -254,7 +266,19 @@ export default {
       inputModal: false,
       formLayout: "horizontal",
       form: this.$form.createForm(this, { name: "coordinated" }),
+      locales: [
+        { value: "vi", label: "VI" },
+        { value: "en", label: "EN" },
+        { value: "jp", label: "JP" },
+      ],
+      locale: this.$i18n.locale,
     };
+  },
+  computed: {},
+  watch: {
+    locale(value) {
+      this.$i18n.setLocale(value);
+    },
   },
   methods: {
     handleChange(value, key, column) {

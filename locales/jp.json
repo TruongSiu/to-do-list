@@ -1,0 +1,16 @@
+{
+    "Add": "追加",
+    "Task": "タスク",
+    "Status": "ステータス",
+    "Describe": "説明する",
+    "Operation": "操作",
+    "Delete": "削除",
+    "new": "新しい",
+    "inprogress": "進行中",
+    "done": "終わり",
+    "Search": "検索",
+    "Reset": "リセット",
+    "Save": "保存",
+    "Cancel": "キャンセル",
+    "Edit": "編集"
+}

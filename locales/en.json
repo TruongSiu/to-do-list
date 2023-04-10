@@ -1,0 +1,16 @@
+{
+    "Add": "Add",
+    "Task": "Task",
+    "Status": "Status",
+    "Describe": "Describe",
+    "Operation": "Operation",
+    "Delete": "Delete",
+    "new": "new",
+    "inprogress": "inprogress",
+    "done": "done",
+    "Search": "Search",
+    "Reset": "Reset",
+    "Save": "Save",
+    "Cancel": "Cancel",
+    "Edit": "Edit"
+}

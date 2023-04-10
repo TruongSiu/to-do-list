@@ -19,7 +19,6 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: ["@/plugins/antd"],
-
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: false,
   ssr: false,
@@ -28,8 +27,33 @@ export default {
   buildModules: [],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: [],
-
+  modules: ["@nuxtjs/i18n"],
+  i18n: {
+    locales: [
+      {
+        code: "en",
+        file: "en.json",
+      },
+      {
+        code: "vi",
+        file: "vi.json",
+      },
+      {
+        code: "jp",
+        file: "jp.json",
+      },
+    ],
+    langDir: "locales",
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: "i18n_redirected",
+    },
+    strategy: "no_prefix",
+    vueI18n: {
+      fallbackLocale: "vi",
+    },
+    defaultLocale: "vi",
+  },
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
 };

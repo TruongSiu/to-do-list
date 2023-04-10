@@ -1,15 +1,22 @@
 <template>
-  <Tutorial />
+  <TodoAntd />
 </template>
 
 <script>
-import Tutorial from "~/components/Tutorial.vue";
-
+import TodoAntd from "~/components/TodoAntd";
 export default {
+  name: "DemoTodo",
   components: {
-    Tutorial,
+    TodoAntd,
   },
-  name: "IndexPage",
-  layout: "login",
+  data() {
+    return {};
+  },
+
+  mounted() {},
+
+  methods: {},
 };
 </script>
+
+<style lang="scss" scoped></style>
