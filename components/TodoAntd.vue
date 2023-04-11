@@ -1,7 +1,7 @@
 <template>
   <div>
     <template>
-      <select v-model="locale" style="margin-left : 15px">
+      <select v-model="locale" style="margin-left: 15px">
         <option
           v-for="(item, index) in locales"
           :key="index"
@@ -13,8 +13,19 @@
     <h1 style="text-align: center">ToDo-List</h1>
     <template>
       <div class="head">
-        <a-button type="primary" @click="showModal"> {{ $t('Add') }}</a-button>
-        <a-modal v-model="inputModal" title="To-do List" @ok="handleOk">
+        <a-button type="primary" @click="showModal"> {{ $t("Add") }}</a-button>
+        <a-modal
+          v-model="inputModal"
+          title="To-do List"
+          @ok="handleOk"
+          @cancel="handleCancel"
+          :ok-button-props="
+            test
+              ? { props: { disabled: false } }
+              : { props: { disabled: true } }
+          "
+          :cancel-button-props="{ props: { disabled: false } }"
+        >
           <template>
             <a-form
               :form="form"
@@ -22,13 +33,22 @@
               :wrapper-col="{ span: 12 }"
               @submit="handleOk"
             >
-              <a-form-item label="Task">
+              <a-form-item label="Task" >
                 <a-input
                   v-decorator="[
                     'task',
                     {
                       rules: [
-                        { required: true, message: 'Please input your task!' },
+                        {
+                          required: true,
+                          message: 'Please input your task!',
+                        },
+                        {
+                          validator: validateSpecialCharacters,
+                        },
+                        {
+                          validator: validateDuplicate,
+                        },
                       ],
                       getValueFromEvent: (e) => e.target.value.trim(),
                     },
@@ -46,13 +66,13 @@
                   placeholder="Select a option"
                 >
                   <a-select-option value="New">
-                    {{ $t('new') }}
+                    {{ $t("new") }}
                   </a-select-option>
                   <a-select-option value="Inprogress">
-                    {{ $t('inprogress') }}
+                    {{ $t("inprogress") }}
                   </a-select-option>
                   <a-select-option value="Done">
-                    {{ $t('done') }}
+                    {{ $t("done") }}
                   </a-select-option>
                 </a-select>
               </a-form-item>
@@ -107,14 +127,14 @@
             style="width: 90px; margin-right: 8px"
             @click="() => handleSearch(selectedKeys, confirm, column.dataIndex)"
           >
-          {{ $t('Search') }}
+            {{ $t("Search") }}
           </a-button>
           <a-button
             size="small"
             style="width: 90px"
             @click="() => handleReset(clearFilters)"
           >
-          {{ $t('Reset') }}
+            {{ $t("Reset") }}
           </a-button>
         </div>
         <a-icon
@@ -142,17 +162,19 @@
         <template slot="operation" slot-scope="text, record">
           <div class="editable-row-operations">
             <span v-if="record.editable">
-              <a @click="() => save(record.key)">{{ $t('Save') }}</a>
+              <a @click="() => save(record.key)">{{ $t("Save") }}</a>
               <a-popconfirm
                 title="Sure to cancel?"
                 @confirm="() => cancel(record.key)"
               >
-                <a>{{ $t('Cancel') }}</a>
+                <a>{{ $t("Cancel") }}</a>
               </a-popconfirm>
             </span>
             <span v-else>
-              <a :disabled="editingKey !== ''" @click="() => edit(record.key)"
-                >{{ $t('Edit') }}</a
+              <a
+                :disabled="editingKey !== ''"
+                @click="() => edit(record.key)"
+                >{{ $t("Edit") }}</a
               >
             </span>
           </div>
@@ -162,7 +184,9 @@
             title="Sure to delete?"
             @confirm="() => onDelete(record.key)"
           >
-            <a href="javascript:;"> {{ $t('Delete') }} <a-icon type="delete" /></a>
+            <a href="javascript:;">
+              {{ $t("Delete") }} <a-icon type="delete"
+            /></a>
           </a-popconfirm>
         </template>
       </a-table>
@@ -173,9 +197,10 @@
 export default {
   data() {
     return {
+      test: false,
       columns: [
         {
-          title: "Task",
+          title: this.$t('Task'),
           dataIndex: "task",
           width: "30%",
           scopedSlots: {
@@ -281,6 +306,24 @@ export default {
     },
   },
   methods: {
+    validateSpecialCharacters(rule, value, callback) {
+      if (/^[a-zA-Z0-9]*$/.test(value) && value !== "") {
+        this.test = true;
+        callback();
+      } else {
+        this.test = false;
+        callback("Task does not contain special characters");
+      }
+    },
+    validateDuplicate(rule, value, callback) {
+      if (this.data.map((el) => el.task).includes(value)) {
+        this.test = false;
+        callback("Task Duplicate");
+      } else {
+        this.test = true;
+        callback();
+      }
+    },
     handleChange(value, key, column) {
       const newData = [...this.data];
       const target = newData.find((item) => key === item.key);
@@ -364,6 +407,9 @@ export default {
       });
       this.form.resetFields();
       this.inputModal = false;
+    },
+    handleCancel() {
+      this.form.resetFields();
     },
   },
 };
