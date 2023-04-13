@@ -33,7 +33,7 @@
               :wrapper-col="{ span: 12 }"
               @submit="handleOk"
             >
-              <a-form-item label="Task" >
+              <a-form-item label="Task">
                 <a-input
                   v-decorator="[
                     'task',
@@ -200,7 +200,7 @@ export default {
       test: false,
       columns: [
         {
-          title: this.$t('Task'),
+          title: this.$t("Task"),
           dataIndex: "task",
           width: "30%",
           scopedSlots: {
@@ -223,7 +223,7 @@ export default {
           },
         },
         {
-          title: "Status",
+          title: this.$t("Status"),
           dataIndex: "status",
           width: "20%",
           scopedSlots: {
@@ -245,7 +245,7 @@ export default {
           },
         },
         {
-          title: "Describe",
+          title: this.$t("Describe"),
           dataIndex: "describe",
           width: "18%",
           scopedSlots: {
@@ -267,7 +267,7 @@ export default {
           },
         },
         {
-          title: "Operation",
+          title: this.$t("Operation"),
           dataIndex: "operation",
           width: "18%",
           scopedSlots: {
@@ -275,7 +275,7 @@ export default {
           },
         },
         {
-          title: "Delete",
+          title: this.$t("Delete"),
           dataIndex: "delete",
           scopedSlots: {
             customRender: "delete",
@@ -312,7 +312,7 @@ export default {
         callback();
       } else {
         this.test = false;
-        callback("Task does not contain special characters");
+        callback("Task does not contain special characters!");
       }
     },
     validateDuplicate(rule, value, callback) {
